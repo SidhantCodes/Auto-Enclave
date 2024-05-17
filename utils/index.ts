@@ -1,14 +1,16 @@
 import { config } from 'dotenv';
 import axios from 'axios';
+import { CarProps, FilterProps } from '@/types';
 
 config();
 
-export async function cars() {
+export async function cars(filters: FilterProps) {
+  const { manufacturer, year, model, limit, fuel } = filters;
   const headers = {
         'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
         'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host
     }
-  const response = await axios.get('https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=corolla', {
+  const response = await axios.get(`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`, {
     headers: headers
   });
 
@@ -30,3 +32,7 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
 
   return rentalRatePerDay.toFixed(0);
 };
+
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+
+}
